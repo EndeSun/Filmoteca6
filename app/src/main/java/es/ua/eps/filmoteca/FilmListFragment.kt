@@ -12,11 +12,18 @@ import androidx.fragment.app.ListFragment
 
 class FilmListFragment : ListFragment() {
 
-    var callback: OnItemSelectedListener ?= null
-
+    var callback: OnItemSelectedListener? = null
+    interface OnItemSelectedListener {
+        fun onItemSelected(position: Int)
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callback = context as? OnItemSelectedListener
+        callback = try {
+            context as OnItemSelectedListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context.toString()
+                    + " debe implementar OnItemSelectedListener")
+        }
 //        callback = try {
 //            context as OnItemSelectedListener
 //        } catch (e: ClassCastException) {
@@ -31,9 +38,11 @@ class FilmListFragment : ListFragment() {
             FilmsArrayAdapter(activity, R.layout.item_film, FilmDataSource.films)
         //Es el parámetro del listFragment
         listAdapter = adapter
+
     }
     override fun onListItemClick(l: ListView, v: View,
                                  position: Int, id: Long) {
         super.onListItemClick(l, v, position, id)
+        callback?.onItemSelected(position)
     }
 }
