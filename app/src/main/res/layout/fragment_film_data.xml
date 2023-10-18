@@ -14,7 +14,7 @@
         android:contentDescription="@string/bladeRunner"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp"
-        android:src="@drawable/blade_runner"
+        tools:src="@drawable/blade_runner"
         />
 
     <TextView

@@ -42,7 +42,7 @@ class AboutActivity : AppCompatActivity() {
         val id: Int = item.getItemId()
         if (id == android.R.id.home) { // ID especial para botón "home"
             NavUtils.navigateUpTo(this,
-                Intent(this, FilmListActivity::class.java))
+                Intent(this, FilmListFragment::class.java))
             return true
         }
         return super.onOptionsItemSelected(item)

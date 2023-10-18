@@ -1,6 +1,4 @@
 package es.ua.eps.filmoteca
-import android.content.Context
-
 class Film {
     var imageResId = 0 // Propiedades de la clase
     var title: String? = null
@@ -10,11 +8,9 @@ class Film {
     var format = 0
     var imdbUrl: String? = null
     var comments: String? = null
-
     override fun toString(): String {
         return title?:"<Sin titulo>" // Al convertir a cadena mostramos su título
     }
-
     companion object {
         const val FORMAT_DVD = 0 // Formatos
         const val FORMAT_BLURAY = 1
@@ -26,7 +22,6 @@ class Film {
         const val GENRE_HORROR = 4
     }
 }
-
 object FilmDataSource {
     val films: MutableList<Film> = mutableListOf<Film>()
     init {

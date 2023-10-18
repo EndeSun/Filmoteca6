@@ -24,23 +24,20 @@ private const val REQUEST_IMAGE_CAPTURE = 2
 
 @Suppress("DEPRECATION")
 class FilmEditActivity : AppCompatActivity() {
-
     @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityFilmEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         position = intent.extras!!.getInt("position")
         val film = FilmDataSource.films[position]
+        //EScribimos en el edit para una mejor usabilidad
         binding.bladeRunnerImageEdit.setImageResource(film.imageResId)
         binding.inputFilmTitle.setText(film.title)
         binding.inputComment.setText(film.comments)
         binding.inputLinkIMDB.setText(film.imdbUrl)
         binding.inputDirectorName.setText(film.director)
         binding.inputYear.setText(film.year.toString())
-
-
         binding.save.setOnClickListener {
             val intentInfoChange = Intent()
             intentInfoChange.putExtra("inputFilmTitle", binding.inputFilmTitle.text.toString())
@@ -52,22 +49,13 @@ class FilmEditActivity : AppCompatActivity() {
             intentInfoChange.putExtra("inputGender",genderOption)
             intentInfoChange.putExtra("inputFormat",formatOption)
             intentInfoChange.putExtra("inputComment",binding.inputComment.text.toString())
-
-//            val drawable =  binding.bladeRunnerImageEdit
-//            val bitmap = (drawable as BitmapDrawable).bitmap
-//            val stream = ByteArrayOutputStream()
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-//            val byteArray = stream.toByteArray()
-//            intentInfoChange.putExtra("inputPhoto", byteArray)
             setResult(Activity.RESULT_OK, intentInfoChange)
             finish()
         }
-
         binding.cancel.setOnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
-
         binding.selectImage.setOnClickListener {
             val photoIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             photoIntent.type = "image/* video/*"
@@ -79,7 +67,6 @@ class FilmEditActivity : AppCompatActivity() {
                 startActivityForResult(photoIntent, IMAGE_PICK)
             }
         }
-
         binding.catchPhoto.setOnClickListener {
             val cameraIntent =  Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
@@ -94,31 +81,28 @@ class FilmEditActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id: Int = item.getItemId()
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id: Int = item.itemId
         if (id == android.R.id.home) { // ID especial para botón "home"
             NavUtils.navigateUpTo(this,
-                Intent(this, FilmListActivity::class.java))
+                Intent(this, FilmListFragment::class.java))
             return true
         }
         return super.onOptionsItemSelected(item)
     }
-
     private val startForResult =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             onActivityResult(IMAGE_PICK, result.resultCode, result.data)
         }
-
     private val startForResultPhoto =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             onActivityResult(REQUEST_IMAGE_CAPTURE, result.resultCode, result.data)
         }
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImageUri = data.data
             val bitmap = this.getBitmapFromUri(selectedImageUri)
@@ -144,5 +128,6 @@ class FilmEditActivity : AppCompatActivity() {
         }
     }
 }
+
 
 
